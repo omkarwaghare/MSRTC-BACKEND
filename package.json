@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tailwind": "npx tailwindcss -i ./views/input.css -o ./public/output.css --watch",
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "devDependencies": {
     "cors": "^2.8.5",
