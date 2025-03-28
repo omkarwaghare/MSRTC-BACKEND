@@ -35,7 +35,7 @@
     // Function to fetch and store the updated applications data on refresh button click
     async function fetchAndStoreApplications() {
       try {
-        const response = await fetch('http://localhost:3000/college/manage-applications/get-pending-applications');
+        const response = await fetch('https://msrtc-backend.onrender.com/college/manage-applications/get-pending-applications');
         const data = await response.json();
         sessionStorage.setItem('studentApplications', JSON.stringify(data)); 
         renderForm(data); 
