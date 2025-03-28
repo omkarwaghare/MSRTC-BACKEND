@@ -1,0 +1,31 @@
+<%- include('../partials/file-header.ejs') %>
+</head>
+  <body class="container h-screen self-center p-4 overflow-x-hidden mx-auto ">
+    <%- include('../partials/host-navbar') %>
+
+    <section class="container flex flex-row h-5/6 gap-2  bg-white shadow-md  mt-2 md:p-2 rounded-md ">
+      <div class="p-2 w-3/12 bg-red-300 flex flex-col ">
+            <li class="list-none w-full  "><a href="/host/manage-routes/all-routes" class="text-xl font-semibold bg-red-400 text-red-950 rounded-lg block p-2">All Routes</a></li>
+            <li class="list-none w-full  "><a href="/host/manage-routes/add-route" class="text-xl font-semibold text-red-950 block p-2">Add New Route</a></li>
+        </div>
+        
+        <div class="bg-red-300 flex-grow overflow-y-auto">
+
+          <h1 class="text-3xl font-bold text-center text-red-950 my-4">All Routes</h1>
+          
+          <% routesData.forEach(route => { %>
+            <div class=" bg-white rounded-md w-2/3 mx-auto mb-3 p-3 flex flex-row justify-between items-center shadow-lg ">
+              <p class="text-xl font-bold mb-4 text-blue-600 ">
+              <%= route.routeName%>
+              </p>
+              <div class="flex flex-row gap-2">
+                <a href="/host/manage-routes/view-route/<%= route._id %>" class="bg-blue-400 py-2 px-6 rounded-lg block text-lg">View</a>
+                <a href="/host/manage-routes/edit-route/<%= route._id %>?editing=true&routeName=<%= route.routeName %>" class="bg-blue-400 py-2 px-6 rounded-lg block text-lg">Edit</a>
+            </div>
+            </div>
+
+          <% }); %>
+      </div>
+    </section>
+  </body>
+</html>

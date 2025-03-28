@@ -1,0 +1,72 @@
+
+<%- include('../partials/file-header.ejs') %>
+</head>
+  <body class="container h-screen self-center p-4 overflow-x-hidden mx-auto ">
+    <%- include('../partials/host-navbar') %>
+
+    <section class="container flex flex-row h-5/6 gap-2  bg-white shadow-md  mt-2 md:p-2 rounded-md ">
+      <div class="w-full bg-red-300 flex flex-col p-10 ">
+
+        <% if(form === 'form1') { %>
+          <form action="/host/manage-students/pass-validity-period" method="post" class="w-1/2 mx-auto bg-white flex flex-col p-10 rounded-md">
+            <p class="text-3xl font-bold mx-auto mb-4 text-blue-900">Student Pass Control Center</p>
+            <p class="text-center text-xl font-semibold mb-4 text-red-500"><%= message  %></p>
+
+            <label for="deactivationDate" class="text-lg font-bold">Grace Date (Valid Until) : </label>
+            <p class="text-lg text-red-500">(For Example : If you set 14 May as the grace date, all student passes will be disabled starting from 15 May.)</p>
+            <input type="date" id="deactivationDate" name="deactivationDate" class="lg:w-full mx-auto mb-4 text-lg h-10 p-4 bg-blue-100" required />
+
+            <label for="reactivationDate" class="text-lg font-bold">Reactivation After : </label>
+            <p class="text-lg text-red-500">(Students can start applying for passes the day after this date. For example, if you set 14 June, applications will reopen from 15 June.)</p>
+            <input type="date" id="reactivationDate" name="reactivationDate" class="lg:w-full mx-auto mb-4 text-lg h-10 p-4 bg-blue-100" required />
+ 
+            <button type="submit" class="lg:w-full bg-blue-400 h-10 mx-auto mt-2 text-lg font-bold">Save Grace & Reactivation Dates</button>
+          </form>
+        <% } else if(form === 'form2')  { %>
+          
+          <form id="disableForm" action="/host/manage-students/disable-accounts" method="POST"  class="w-1/2 mx-auto bg-white flex flex-col p-10 rounded-md">
+            <p class="text-3xl font-bold mx-auto text-blue-900 mb-10">Grace & Reactivation Dates Overview</p>
+
+            <p class="text-center text-xl font-bold mb-4 text-blue-600">
+              Deactivation Date Set : <span class="font-medium text-black "><%= deactivationDate %></span>
+            </p>
+            <p class="text-center text-xl font-bold mb-4 text-blue-600">
+              Reactivation Date Set : <span class="font-medium text-black"><%= reactivationDate %></span>
+            </p>
+            
+            <button type="submit" class="lg:w-2/3 bg-red-600 h-10 mx-auto mt-10 text-lg font-semibold" id="disableButton">Disable All Student Passes</button>
+          </form>
+
+        <% } else if(form === 'form3')  { %>
+          
+          <div class="w-1/2 mx-auto bg-white flex flex-col p-10 rounded-md">
+            <p class="text-3xl font-bold mx-auto text-blue-900 mb-10">Pass Deactivation Status</p>
+            
+            <p class="text-center text-2xl font-bold mb-4 text-red-600">
+              All student passes are disabled
+            </p>
+            
+            <p class="text-center text-xl font-bold mb-4 text-blue-600">
+              Reactivation Date Set : <span class="font-medium text-black"><%= reactivationDate %></span>
+            </p>
+            
+          </div>
+
+        <% } %>
+      </div>
+        
+    </section>
+  </body>
+  
+<script>
+  document.getElementById("disableForm").addEventListener('submit', (event) => {
+    let text = "Are you sure to disable all student passes?";
+    let confirmAction = confirm("Are you sure to disable all student passes?");
+    if (!confirmAction) {
+      event.preventDefault(); 
+    }
+  });
+</script>
+
+
+</html>

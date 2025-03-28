@@ -1,0 +1,51 @@
+<%- include('../partials/file-header.ejs') %>
+</head>
+  <body class="container h-screen self-center p-4 overflow-x-hidden mx-auto">
+    <%- include('../partials/host-navbar') %>
+
+    <section class="container flex flex-row gap-2 h-5/6 bg-white shadow-md mt-2 md:p-2 rounded-md border-2">
+        <div class="p-2 w-3/12 bg-red-300 flex flex-col ">
+          <li class="list-none w-full  "><a href="/host/manage-institutes/all-institutes" class="text-xl font-semibold text-red-950 rounded-lg block p-2">All Institute</a></li>
+          <li class="list-none w-full  "><a href="/host/manage-institutes/add-institute" class="text-xl font-semibold  bg-red-400 text-red-950 block p-2">Add New Institute</a></li>
+        </div>
+            
+        <form action="<%= submitOn %>" method="POST" class=" flex-grow p-2 bg-red-300">
+          <div class="my-4">
+            <p class="text-3xl font-bold text-center text-red-950 "><%= editing ? `Edit Institute Information ${instituteName}` : 'Add New Institute'%></p>
+          </div>
+
+          <% if(responseMessage.trim().length > 0) { %>
+            <p class="text-white text-xl text-center bg-red-400 w-2/3 mx-auto p-1 rounded-md"><%= responseMessage %></p>
+          <% } %>
+
+          <% if(editing === true) { %>
+            <div class="w-2/3 mx-auto flex flex-col mb-4">
+              <input type="text" name="instituteId" id="instituteId" value="<%= instituteId %>" class="h-8 px-2 rounded-sm" readonly hidden>
+            </div>
+          <% } %>
+
+          <div class="w-2/3 mx-auto flex flex-col mb-4">
+            <label for="instituteName" class="text-xl font-semibold mb-1 text-red-800">Enter Institute Name</label>
+            <input type="text" name="instituteName" id="instituteName" value="<%= editing ? instituteName : '' %>" class="h-10 px-2 rounded-sm"  required>
+          </div>
+
+          <div class="w-2/3 mx-auto flex flex-col mb-4 ">
+            <label for="instituteEmailId" class="text-xl font-semibold mb-1 text-red-800">Institute Email Id</label>
+            <input type="email" name="instituteEmailId" id="instituteEmailId" class="h-10 px-2 rounded-sm" value="<%= instituteEmailId ? instituteEmailId : '' %>" />
+          </div>
+
+          <% if(editing === false) { %>
+          <div class="w-2/3 mx-auto flex flex-col mb-4 ">
+            <label for="password" class="text-xl font-semibold mb-1 text-red-800">Set Initial Password</label>
+            <input type="password" name="password" id="password" class="h-10 px-2 rounded-sm"  %>" />
+          </div>
+          <% } %>
+          
+          <div class="w-2/3 mx-auto flex flex-col mb-4 bg-red-200 rounded-sm">
+            <input type="submit"  value="Submit" class="h-10 text-lg text-red-800 font-bold">
+          </div>
+
+        </form>
+    </section>
+  </body>
+</html>

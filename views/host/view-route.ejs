@@ -1,0 +1,36 @@
+<%- include('../partials/file-header.ejs') %>
+</head>
+  <body class="container h-screen self-center p-4 overflow-x-hidden mx-auto ">
+    <%- include('../partials/host-navbar') %>
+
+    <section class="container flex flex-row h-5/6 gap-2  bg-white shadow-md  mt-2 md:p-2 rounded-md ">
+      <div class="p-2 w-3/12 bg-red-300 flex flex-col ">
+            <li class="list-none w-full  "><a href="/host/manage-routes/all-routes" class="text-xl font-semibold bg-red-400 text-red-950 rounded-lg block p-2">All Routes</a></li>
+            <li class="list-none w-full  "><a href="/host/manage-routes/add-route" class="text-xl font-semibold text-red-950 block p-2">Add New Route</a></li>
+        </div>
+        
+        <div class="bg-red-300 flex-grow overflow-y-auto py-2">
+
+            <h1 class="text-3xl font-bold text-center text-red-950 my-4"><%= routeData.routeName %></h1>
+            <table class="bg-green-300 w-2/3 rounded-md shadow-lg mx-auto">
+                <tr class="">
+                    <th class="p-2 text-center border-2">Stop Sequence Number</th>
+                    <th class="p-2 text-center border-2">Stop Name</th>
+                    <th class="p-2 text-center border-2">Stop Point While Going</th>
+                    <th class="p-2 text-center border-2">Stop Point While Returning</th>
+                </tr>
+                <% routeData.stops.forEach(stop => { %>
+                    <tr class=" bg-white border-2 border-black">
+                        <td class="p-4 border-2 text-center"> <%= stop.stopSequence%> </td>
+                        <td class="p-2 border-2"> <%= stop.stop %> </td>
+                        <td class="p-2 border-2 text-center"> <%= stop.goingPoint %> </td>
+                        <td class="p-2 border-2 text-center"> <%= stop.returningPoint %> </td>
+                    </tr>
+
+                <% }); %>
+            </table>
+
+      </div>
+    </section>
+  </body>
+</html>

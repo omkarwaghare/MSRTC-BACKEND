@@ -1,0 +1,120 @@
+<%- include('../partials/file-header.ejs') %>
+</head>
+  <body class="container h-screen self-center p-4 overflow-x-hidden ">
+    <%- include('../partials/college-navbar') %>
+
+    <section class="container flex flex-row gap-2 h-5/6 bg-white shadow-md mt-2 md:p-2 rounded-md border-2">
+      <div class="bg-red-400 w-full p-4 flex flex-col items-center">
+        <h1 class="text-3xl text-white text-center mb-4">Student Pass Applications</h1>
+
+        <!-- Search Form -->
+        <form class="w-2/3 flex justify-center gap-4 overflow-auto" id='searchForm'> 
+          <input type="text" id="name" class="h-8 w-2/3 px-2 rounded" placeholder="Enter Name Of Student.." required/>
+          <input type="submit" value="Search" class="text-white bg-green-500 hover:bg-green-700 px-4 py-1 rounded"/>
+        </form>
+
+        <div class="flex flex-row justify-center gap-x-10">
+          <!-- Refresh Button -->
+          <button id="refreshButton" class="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded mt-4">
+            Refresh Fetched Data
+          </button>
+
+          <button id="clearFilter" class="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded mt-4">
+            Clear Filter
+          </button>
+        </div>
+
+        <!-- Applications Display -->
+        <div id="applications" class="w-5/6 bg-white rounded-md py-4 px-2 mt-4 hidden ">
+        </div>
+      </div>
+    </section>
+  </body>
+
+  <script>
+    // Function to fetch and store the updated applications data on refresh button click
+    async function fetchAndStoreApplications() {
+      try {
+        const response = await fetch('http://localhost:3000/college/manage-applications/get-pending-applications');
+        const data = await response.json();
+        sessionStorage.setItem('studentApplications', JSON.stringify(data)); 
+        renderForm(data); 
+      } catch (error) {
+        console.error('Error fetching student applications:', error);
+      }
+    }
+
+    // Event listener for the search form
+    document.getElementById('searchForm').addEventListener('submit', (event) => {
+      event.preventDefault(); 
+
+      let name = document.getElementById('name').value.trim().toLowerCase();
+      let studentApplications = sessionStorage.getItem('studentApplications');
+
+      if (!studentApplications) {
+        renderForm([]);  
+        return;
+      }
+
+      let parsedApplications = JSON.parse(studentApplications);
+      let filteredApplications = parsedApplications.filter(application =>
+        application.studentName.toLowerCase().includes(name)
+      );
+
+      renderForm(filteredApplications);  
+    });
+
+    // Fetch and render data if data is not already in session storage when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      let studentApplications = sessionStorage.getItem('studentApplications');
+      if (!studentApplications) {
+        fetchAndStoreApplications();  
+      } else {
+        renderForm(JSON.parse(studentApplications));  
+      }
+    });
+
+    // Function to render the form with student data
+    function renderForm(studentApplications) {
+        const applicationContainer = document.getElementById('applications');
+        applicationContainer.innerHTML = ''; 
+
+        if (studentApplications.length > 0) {
+            studentApplications.forEach(application => {
+                const formGroup = document.createElement('div');
+                formGroup.classList.add('w-full', 'flex', 'justify-between', 'items-center','mb-2');
+                formGroup.innerHTML = `
+                    <p class="text-md"><b>Student Name :</b> ${application.studentName}</p>
+                    <p class="text-md"><b>Class :</b> ${application.class}</p>
+                    <p class="text-md"><b>Division :</b> ${application.division}</p>
+                    <a href="/college/manage-applications/view-application/${application.studentId}" class="text-white bg-green-500 hover:bg-green-700 px-4 py-2 rounded block">
+                      View Application
+                    </a>       
+                `;
+                applicationContainer.appendChild(formGroup);
+            });
+            applicationContainer.classList.remove("hidden");
+        } else {
+            const formGroup = document.createElement('div');
+            formGroup.innerHTML = `
+                <p class="text-md text-center"><b>No students found matching your search.</b></p>    
+            `;
+            applicationContainer.appendChild(formGroup);
+            applicationContainer.classList.remove("hidden");
+        }
+    }
+
+    // Refresh button functionality to fetch and update data on click event
+    document.getElementById('refreshButton').addEventListener('click', () => {
+      fetchAndStoreApplications(); 
+    });
+
+    // Refresh button functionality to fetch and update data on click event
+    document.getElementById('clearFilter').addEventListener('click', () => {
+      let studentApplications = sessionStorage.getItem('studentApplications');
+      renderForm(JSON.parse(studentApplications));  
+    
+    });
+  </script>
+
+</html>

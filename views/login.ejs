@@ -1,0 +1,28 @@
+<%- include('./partials/file-header.ejs') %>
+</head>
+  <body class="container h-screen self-center p-4 overflow-x-hidden flex justify-center align-center ">
+    <form class="container h-max p-8   rounded-md w-7/12  shadow-lg my-auto " action="<%= submitOn %>" method="POST">
+      <h1 class="text-4xl text-center font-bold text-red-500 mb-8">Login To MSRTC Pass System</h1>
+
+      <% if(responseMessage.trim().length > 0) { %>
+        <p class="text-red-600 text-xl text-center bg-red-200 w-2/3 mx-auto p-1"><%= responseMessage %></p>
+      <% } %>
+    
+
+      <div class="flex flex-col w-2/3 mx-auto mt-4"> 
+        <label for="emailId" class="text-xl mb-1">Enter Registered Email : </label>
+        <input type="email" name="emailId" id="emailId" class="border-2  rounded-sm h-10 px-2 " required>
+      </div>
+
+      <div class="flex flex-col w-2/3 mx-auto mt-4"> 
+        <label for="password" class="text-xl mb-1" >Password : </label>
+        <input type="password" name="password" id="password" class="border-2  rounded-sm h-10  px-2" required>
+      </div>
+
+      <div class="flex flex-col w-2/3 mx-auto mt-4"> 
+        <input type="submit" value="Login" class="bg-green-600 rounded-sm h-10 text-xl font-bold " />
+      </div>
+
+    </form>
+  </body>
+</html>

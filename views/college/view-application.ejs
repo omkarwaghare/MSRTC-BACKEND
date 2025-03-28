@@ -1,0 +1,95 @@
+<%- include('../partials/file-header.ejs') %>
+</head>
+  <body class="container h-screen self-center p-4 overflow-x-hidden mx-auto ">
+    <%- include('../partials/college-navbar') %>
+
+    <section class="container flex flex-row gap-2 h-5/6 bg-white shadow-md mt-2 md:p-2 rounded-md border-2">
+        <div class="bg-red-400 w-full p-4 flex flex-col items-center">
+        <h1 class="text-3xl text-white text-center mb-4">Student Pass Application</h1>
+
+        <div class="w-4/6  bg-white rounded-md  p-2 mt-2">
+            <% if(responseMessage.trim().length > 0) { %>
+                <p class="text-xl font-bold"><%= responseMessage%></p>
+            <% } %>   
+            <div id="application" class="w-full mx-auto flex gap-2  "></div>
+
+            <form action="/college/manage-applications/view-application/approve-reject-application" method="post" class="flex justify-center gap-8" id="form">
+                <input type="hidden" name="studentId" id="studentId" value="<%= studentId %>">
+                <input type="hidden" name="action" id="action">
+
+                <button type="submit" class="text-white font-bold w-40 bg-green-500 hover:bg-green-700 px-4 py-2 rounded mt-2" 
+                onclick="document.getElementById('action').value = 'approve'">Approve</button>
+
+                <button type="submit" class="text-white font-bold w-40 bg-red-500 hover:bg-red-700 px-4 py-2 rounded mt-2" 
+                onclick="document.getElementById('action').value = 'reject'">Reject</button>
+            </form>
+        </div>
+     </div>
+    </section>
+  </body>
+
+  <script>
+
+    // It handles the submit functionality of form
+    document.getElementById("form").addEventListener("submit", (event) => {
+        const studentId = document.getElementById("studentId")?.value?.trim();
+        if (!studentId) {
+            console.warn("Student ID is missing or undefined.");
+            return;
+        }
+
+        let studentApplications = sessionStorage.getItem("studentApplications");
+        if (!studentApplications) {
+            console.warn("No student applications found in session storage.");
+            return;
+        }
+
+        let parsedApplications = JSON.parse(studentApplications);
+        
+        let updatedApplications = parsedApplications.filter(application => application.studentId.trim() !== studentId);
+
+        sessionStorage.setItem("studentApplications", JSON.stringify(updatedApplications));
+    });
+
+    
+
+    // When document load this fill out info if student in application div
+    document.addEventListener("DOMContentLoaded", () => {
+      const studentId = document.getElementById("studentId")?.value?.trim();
+      if (!studentId) {
+        console.warn("Student ID is missing or undefined.");
+        return;
+      }
+
+      let studentApplications = sessionStorage.getItem('studentApplications');
+      if (!studentApplications) {
+        console.warn("No student applications found in session storage.");
+        return;
+      }
+
+      let parsedApplications = JSON.parse(studentApplications);
+      let application = parsedApplications.find(application => application.studentId.trim() === studentId);
+
+      if (!application) {
+        console.warn("No matching application found.");
+        return;
+      }
+
+      const applicationContainer = document.getElementById('application');
+      applicationContainer.classList.remove('hidden'); 
+
+      applicationContainer.innerHTML = `
+       
+          <img src="${application.profileImageURL}" class="w-60 aspect-square mx-auto  mb-4"> 
+          <div class="w-full">
+            <p class="text-lg mb-2"><b>Student Name : </b> ${application.studentName}</p>
+            <p class="text-lg mb-2"><b>Class : </b> ${application.class}</p>
+            <p class="text-lg mb-2"><b>Division : </b> ${application.division}</p>
+            <p class="text-lg mb-2"><b>Address : </b> ${application.address}</p>
+            <p class="text-lg mb-2"><b>Birth Date : </b> ${application.birthDate}</p>          
+          </div>
+      `;
+    });
+  </script>
+
+</html>

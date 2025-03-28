@@ -1,0 +1,50 @@
+<%- include('./partials/file-header') %>
+
+<body class="container h-screen self-center p-4 overflow-x-hidden flex justify-center align-center">
+    <form id="form" class="container h-max p-8 rounded-md w-7/12 shadow-lg my-auto" action="<%= submitOn %>" method="POST">
+
+        <img src="/src/OTP-Mail.jpg" alt="OTP-Mail Image" class="w-2/3 mx-auto" loading="lazy">
+
+        <h1 class="text-4xl text-center font-bold text-red-500 mb-8">OTP Verification</h1>
+        <p class="text-center text-lg w-2/3 font-bold mx-auto">One Time Password (OTP) has been sent via Email to <%= emailId %>. The OTP will be valid for 5 minutes only.</p>
+
+        <% if(responseMessage.trim().length > 0) { %>
+        <p class="text-red-600 text-xl text-center bg-red-200 w-2/3 mx-auto p-1"><%= responseMessage %></p>
+        <% } %>
+
+        <div class="flex flex-col w-2/3 mx-auto mt-4">
+            <input type="email" name="emailId" id="emailId" value="<%= emailId %>" hidden>
+            <input type="text" name="OTP" id="OTP" class="border-2 rounded-sm h-10 text-center px-2"
+                placeholder="Enter Your OTP" maxlength="6" required>
+            <p id="error" class="text-red-600 text-center hidden">OTP must be exactly 6 digits.</p>
+        </div>
+
+        <div class="flex flex-col w-2/3 mx-auto mt-4">
+            <input type="submit" value="Submit OTP" class="bg-green-600 rounded-sm h-10 text-xl font-bold hover:bg-green-500">
+        </div>
+
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const otpInput = document.getElementById("OTP");
+            const otpForm = document.getElementById("form");
+            const otpError = document.getElementById("error");
+
+            otpInput.addEventListener("input", function () {
+                this.value = this.value.replace(/\D/g, ''); 
+            });
+
+            otpForm.addEventListener("submit", function (event) {
+                if (otpInput.value.length !== 6) {
+                    otpError.classList.remove("hidden"); 
+                    event.preventDefault(); 
+                } else {
+                    otpError.classList.add("hidden"); 
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

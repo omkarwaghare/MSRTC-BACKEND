@@ -1,0 +1,45 @@
+<%- include('../partials/file-header.ejs') %>
+</head>
+  <body class="container h-screen self-center p-4 overflow-x-hidden mx-auto">
+    <%- include('../partials/host-navbar') %>
+
+    <section class="container flex flex-row gap-2 h-5/6 bg-white shadow-md mt-2 md:p-2 rounded-md border-2">
+        <div class="p-2 w-3/12 bg-red-300 flex flex-col ">
+            <li class="list-none w-full"><a href="/host/manage-passrates/all-pass-rates" class="text-xl font-semibold text-red-950 block p-2">All Pass Rates</a></li>
+            <li class="list-none w-full"><a href="/host/manage-passrates/add-pass-rate" class="text-xl font-semibold bg-red-400 rounded-lg text-red-950 block p-2">Add New Pass Rate</a></li>
+        </div>
+            
+        <form action="<%= submitOn %>" method="POST" class=" flex-grow p-2 bg-red-300">
+          <div class="my-4">
+            <p class="text-3xl font-bold text-center text-red-950 "><%= editing ? 'Edit Pass Rate ' : 'Add New Pass Rate'%></p>
+          </div>
+
+          <% if(responseMessage.trim().length > 0) { %>
+            <p class="text-white text-xl text-center bg-red-400 w-2/3 mx-auto p-1 rounded-md"><%= responseMessage %></p>
+          <% } %>
+
+          <% if(editing === true) { %>
+            <div class="w-2/3 mx-auto flex flex-col mb-4">
+              <input type="text" name="passrateId" id="passrateId" value="<%= passrateId %>" class="h-8 px-2 rounded-sm" hidden>
+            </div>
+          <% } %>
+
+          <div class="w-2/3 mx-auto flex flex-col mb-4">
+            <label for="point" class="text-xl font-semibold mb-1 text-red-800">Travelling Point (Ex. 0.5 , 1 )</label>
+            <input type="number" name="point" id="point" value="<%= editing ? travellingPoints : '' %>" class="h-10 px-2 rounded-sm" step="any" required>
+          </div>
+
+          <div class="w-2/3 mx-auto flex flex-col mb-4 ">
+            <label for="passrate" class="text-xl font-semibold mb-1 text-red-800">Pass Rate</label>
+            <input type="number" name="passrate" id="passrate" value="<%= editing ? passrate : '' %>" class="h-10 rounded-sm appearance-none px-2" required>
+          </div>
+
+          
+          <div class="w-2/3 mx-auto flex flex-col mb-4 bg-red-200 rounded-sm">
+            <input type="submit"  value="Submit" class="h-10 text-lg text-red-800 font-bold">
+          </div>
+
+        </form>
+    </section>
+  </body>
+</html>

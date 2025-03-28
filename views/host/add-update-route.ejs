@@ -1,0 +1,45 @@
+<%- include('../partials/file-header.ejs') %>
+</head>
+  <body class="container h-screen self-center p-4 overflow-x-hidden mx-auto">
+    <%- include('../partials/host-navbar') %>
+
+    <section class="container flex flex-row gap-2 h-5/6 bg-white shadow-md mt-2 md:p-2 rounded-md border-2">
+        <div class="p-2 w-3/12 bg-red-300 flex flex-col ">
+            <li class="list-none w-full"><a href="/host/manage-routes/all-routes" class="text-xl font-semibold text-red-950 block p-2">All Routes</a></li>
+            <li class="list-none w-full"><a href="/host/manage-routes/add-route" class="text-xl font-semibold bg-red-400 rounded-lg text-red-950 block p-2">Add New Route</a></li>
+        </div>
+            
+        <form action="<%= submitOn %>" method="POST" enctype="multipart/form-data" class=" flex-grow p-2 bg-red-300">
+          <div class="my-4">
+            <p class="text-3xl font-bold text-center text-red-950 "><%= editing ? `Edit Route ${routeName}` : 'Add New Route'%></p>
+          </div>
+
+          <% if(responseMessage.trim().length > 0) { %>
+            <p class="text-white text-xl text-center bg-red-400 w-2/3 mx-auto p-1 rounded-md"><%= responseMessage %></p>
+          <% } %>
+
+          <% if(editing === true) { %>
+            <div class="w-2/3 mx-auto flex flex-col mb-4">
+              <input type="text" name="routeId" id="routeId" value="<%= routeId %>" class="h-8 px-2 rounded-sm" hidden>
+            </div>
+          <% } %>
+
+          <div class="w-2/3 mx-auto flex flex-col mb-4">
+            <label for="routeName" class="text-xl font-semibold mb-1 text-red-800">Enter Bus Route Name</label>
+            <input type="text" name="routeName" id="routeName" value="<%= editing ? routeName : '' %>" class="h-10 px-2 rounded-sm"  required>
+          </div>
+
+          <div class="w-2/3 mx-auto flex flex-col mb-4 ">
+            <label for="routeName" class="text-xl font-semibold mb-1 text-red-800">Add Your Excel File</label>
+            <input type="file" accept=".xlsx,.xls" name="file" id="file" class="h-10 rounded-sm" required>
+          </div>
+
+          
+          <div class="w-2/3 mx-auto flex flex-col mb-4 bg-red-200 rounded-sm">
+            <input type="submit"  value="Submit" class="h-10 text-lg text-red-800 font-bold">
+          </div>
+
+        </form>
+    </section>
+  </body>
+</html>
