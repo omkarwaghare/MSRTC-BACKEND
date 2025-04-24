@@ -225,7 +225,7 @@ exports.postAddRoute = async (req, res, next) => {
         try {
             sheetData = extractDataFromExcel(worksheet);
         } catch (error) {
-            return res.status(400).render('host/add-update-route', { pageTitle: 'Add New Route', responseMessage: error.message });
+            return res.status(400).render('host/add-update-route', { pageTitle: 'Add New Route', submitOn: '/host/manage-routes/add-route', editing: false, routeId: '', routeName: '', responseMessage: error.message });
         }
 
         const dataToInsert = {
@@ -234,7 +234,7 @@ exports.postAddRoute = async (req, res, next) => {
         }
 
         const result = await Host.addRoute(dataToInsert)
-        res.status(result.status).render('host/add-update-route', { pageTitle: 'Add New Route', responseMessage: result.message })
+        res.status(result.status).render('host/add-update-route', { pageTitle: 'Add New Route', submitOn: '/host/manage-routes/add-route', editing: false, routeId: '', routeName: '', responseMessage: result.message })
 
     } catch (error) {
         console.error("Error processing file:", error);
